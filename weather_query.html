@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- test api call -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+
+    var query_param = "seattle";
+    // dylan's api key
+    var appID = "642f9e3429c58101eb516d1634bdaa4b";
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + query_param + "&APPID=" + appID
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    })
+    .then(function(response) {
+
+    console.log(response)
+    })
+
+    </script>
+
+</body>
+</html>
