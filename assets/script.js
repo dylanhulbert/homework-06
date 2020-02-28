@@ -12,7 +12,7 @@ $( document ).ready(function() {
             $("#main_weather").html(json.weather[0].main);
             $("#description_weather").html(json.weather[0].description);
             $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
-            $("#temperature").html(json.main.temp);
+            $("#temperature").html((((json.main.temp) - 273.15) * (9/5)) +32);
             $("#windspeed").html(json.wind.speed);
             $("#pressure").html(json.main.pressure);
             $("#humidity").html(json.main.humidity);
@@ -28,15 +28,8 @@ $( document ).ready(function() {
     console.log(weather)
     })
     
-    // Optional Code for temperature conversion
+    // // Optional Code for temperature conversion
     // var fahrenheit = true;
-
-    // $("#convertToCelsius").click(function() {
-    //     if (fahrenheit) {
-    //         $("#temperature").text(((($("#temperature").text() - 32) * 5) / 9));
-    //     }
-    //     fahrenheit = false;
-    // });
 
     // $("#convertToFahrenheit").click(function() {
     //     if (fahrenheit == false) {
