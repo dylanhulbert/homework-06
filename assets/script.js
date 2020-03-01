@@ -2,7 +2,6 @@
 var city;
 var mainCard = $(".card-body");
 var searchHistory = [];
-
 // returns local storage search history
 function getItems() {
     var storedCities = JSON.parse(localStorage.getItem("searchHistory"));
@@ -14,7 +13,7 @@ function getItems() {
         if (i == 8) {
             break;
           }
-        //  bootstrap to create links/buttons https://getbootstrap.com/docs/4.0/components/list-group/
+        //  creates links/buttons https://getbootstrap.com/docs/4.0/components/list-group/
         cityButton = $("<a>").attr({
             class: "list-group-item list-group-item-action",
             href: "#"
@@ -26,13 +25,11 @@ function getItems() {
 };
 // invokes getItems
 getItems();
-
 // main card
 function getData() {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=642f9e3429c58101eb516d1634bdaa4b"
     mainCard.empty();
     $("#weeklyForecast").empty();
-
     // requests
     $.ajax({
         url: queryURL,
@@ -69,7 +66,6 @@ function getData() {
         }).then(function (response) {
             mainCard.append($("<p>").html("UV Index: <span>" + response.value + "</span>"));
         })
-        
         // another call for the 5-day (forecast)
         $.ajax({
             url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=642f9e3429c58101eb516d1634bdaa4b",
@@ -102,7 +98,7 @@ function getData() {
         })
     })
 };
-
+// on click, adds to history as a sting
 $("#searchCity").click(function (event) {
     city = $("#city").val();
     getData();
@@ -121,7 +117,7 @@ $("#searchCity").click(function (event) {
         $(".list-group").append(cityButton);
     };
 });
-
+// produces history
 $(".list-group-item").click(function (event) {
     city = $(this).text();
     getData();
