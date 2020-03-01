@@ -1,41 +1,128 @@
-$( document ).ready(function() {
-    var appID = "642f9e3429c58101eb516d1634bdaa4b";
+// three main section vars
+var city;
+var mainCard = $(".card-body");
+var searchHistory = [];
 
-    $(".query_btn").click(function(){
-        var query_param = $(this).prev().val();
-
-        if ($(this).prev().attr("placeholder") == "City") {
-            var weather = "https://api.openweathermap.org/data/2.5/weather?q=" + query_param + "&APPID=" + appID;
-        }
-        $.getJSON(weather,function(json){
-            $("#city").html(json.name);
-            $("#main_weather").html(json.weather[0].main);
-            $("#description_weather").html(json.weather[0].description);
-            $("#weather_image").attr("src", "https://openweathermap.org/img/w/" + json.weather[0].icon + ".png");
-            $("#temperature").html((((json.main.temp) - 273.15) * (9/5)) +32);
-            $("#windspeed").html(json.wind.speed);
-            $("#pressure").html(json.main.pressure);
-            $("#humidity").html(json.main.humidity);
+// returns local storage search history
+function getItems() {
+    var storedCities = JSON.parse(localStorage.getItem("searchHistory"));
+    if (storedCities !== null) {
+        searchHistory = storedCities;
+    };
+    // lists up to 8... FIX TO SHOW MOST RECENT
+    for (i = 0; i < searchHistory.length; i++) {
+        if (i == 8) {
+            break;
+          }
+        //  bootstrap to create links/buttons https://getbootstrap.com/docs/4.0/components/list-group/
+        cityButton = $("<a>").attr({
+            class: "list-group-item list-group-item-action",
+            href: "#"
         });
+        // appends history as a button below the search field
+        cityButton.text(searchHistory[i]);
+        $(".list-group").append(cityButton);
+    }
+};
+// invokes getItems
+getItems();
+
+// main card
+function getData() {
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=642f9e3429c58101eb516d1634bdaa4b"
+    mainCard.empty();
+    $("#weeklyForecast").empty();
+
+    // requests
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+
+        // using moment to craft the date
+        var date = moment().format(" MM/DD/YYYY");
+        // takes the icon code from the response and assigns it to iconCode
+        var iconCode = response.weather[0].icon;
+        // builds the main card icon url
+        var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+        // takes the name added from the search and the date/format from moment and creates a single var
+        var name = $("<h3>").html(city + date);
+        // displays name in main card
+        mainCard.prepend(name);
+        // displays icon on main card
+        mainCard.append($("<img>").attr("src", iconURL));
+        // converts K and removes decimals using Math.round
+        var temp = Math.round((response.main.temp - 273.15) * 1.80 + 32);
+        mainCard.append($("<p>").html("Temperature: " + temp));
+        var humidity = response.main.humidity;
+        mainCard.append($("<p>").html("Humidity: " + humidity));
+        var windSpeed = response.wind.speed;
+        mainCard.append($("<p>").html("Wind Speed: " + windSpeed));
+        // takes from the response and creates a var used in the next request for UV index
+        var lat = response.coord.lat;
+        var lon = response.coord.lon;
+        // separate request for UV index, requires lat/long
+        $.ajax({
+            url: "https://api.openweathermap.org/data/2.5/uvi?appid=642f9e3429c58101eb516d1634bdaa4b&lat=" + lat + "&lon=" + lon,
+            method: "GET"
+        // displays UV in main card
+        }).then(function (response) {
+            mainCard.append($("<p>").html("UV Index: <span>" + response.value + "</span>"));
+        })
+        
+        // another call for the 5-day (forecast)
+        $.ajax({
+            url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=642f9e3429c58101eb516d1634bdaa4b",
+            method: "GET"
+        // displays 5 separate columns from the forecast response
+        }).then(function (response) {
+            for (i = 0; i < 5; i++) {
+                // creates the columns
+                var newColumn = $("<div>").attr("class", "col fiveDay bg-primary text-white rounded-lg p-2");
+                $("#weeklyForecast").append(newColumn);
+                // uses moment for the date
+                var myDate = new Date(response.list[i * 8].dt * 1000);
+                // displays date
+                newColumn.append($("<h4>").html(myDate.toLocaleDateString()));
+                // brings back the icon url suffix
+                var iconCode = response.list[i * 8].weather[0].icon;
+                // builds the icon URL
+                var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+                // displays the icon
+                newColumn.append($("<img>").attr("src", iconURL));
+                // converts K and removes decimals using Math.round
+                var temp = Math.round((response.list[i * 8].main.temp - 273.15) * 1.80 + 32);
+                // displays temp
+                newColumn.append($("<p>").html("Temp: " + temp));
+                // creates a var for humity from the response
+                var humidity = response.list[i * 8].main.humidity;
+                // displays humidity
+                newColumn.append($("<p>").html("Humidity: " + humidity));
+            }
+        })
     })
- 
-    // $.ajax({
-    //     url: queryURL,
-    //     method: "GET"
-    // })
-    // .then(function(weather) {
+};
 
-    // console.log(weather)
-    // })
-    
-    // // Optional Code for temperature conversion
-    // var fahrenheit = true;
+$("#searchCity").click(function (event) {
+    city = $("#city").val();
+    getData();
+    var checkArray = searchHistory.includes(city);
+    if (checkArray == true) {
+        return
+    }
+    else {
+        searchHistory.push(city);
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+        var cityButton = $("<a>").attr({
+            class: "list-group-item list-group-item-action",
+            href: "#"
+        });
+        cityButton.text(city);
+        $(".list-group").append(cityButton);
+    };
+});
 
-    // $("#convertToFahrenheit").click(function() {
-    //     if (fahrenheit == false) {
-    //         $("#temperature").text((($("#temperature").text() * (9/5)) + 32));
-    //     }
-    //     fahrenheit = true;
-
-    // })
+$(".list-group-item").click(function (event) {
+    city = $(this).text();
+    getData();
 });

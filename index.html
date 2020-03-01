@@ -5,89 +5,50 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link rel="stylesheet" href="assets/style.css" />
 		<title>Weather Dashboard</title>
 	</head>
-	<body> 
-        <div class="container ">
-            <nav class="navbar bg-dark">
-                <span class="header-style mx-auto">Weather Dashboard</span>
-            </nav>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="col-sm-4 m-0">
-                            <div class="mt-2">Search for a City:</div>
 
-                            <!-- search -->
-                            <nav class="navbar navbar-light p-3">
-                                <form class="form-inline">
-                                  <input type="text" placeholder="City" class="form-control mr-sm-2">
-                                  <button type="button" class="query_btn btn btn-primary"><i class="fas fa-search"></i>
-                                </button>
-                                </form>
-                            </nav>
+<body>
 
-                            <div class="card p-0 m-0">
-                                <ul class="list-group list-group-flush">
-                                    <!-- gonna have to add rows with this li to this div -->
-                                  <li class="list-group-item">1</li>
-                                  <li class="list-group-item">2</li>
-                                  <li class="list-group-item">3... 8</li>
-                                </ul>
-                              </div>
-                            </div>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="card mt-3">
-                                        <div class="card-body">
-                                        
-                                            <!-- main box -->
-                                        <div class="row">
-                                            <div class="col-lg-8 col-lg-offset-2 text-left">
-                                                <h2><span id="city"></span></h2>
-                                                <h5>Temperature: <span id="temperature"></span></h5>
-                                                <h5>Humidity: <span id="humidity"></span></h5>
-                                                <h5>Wind Speed: <span id="windspeed"></span></h5>
-                                                <h5>UV Index: <span id="description_weather"></span></h5>
-                                                <img id="weather_image" src="">
-                                            </div>
-                                        </div>
-
-                                        </div>
-                                      </div>
-                                </div>
-                                <!-- 5 boxes -->
-                                <div class="col-sm-12 p-1 m-1">                                  
-                                    <div class="row">
-                                        <div class="col-sm">
-                                           <span id="weatherOne"></span>
-                                        </div>
-                                        <div class="col-sm">
-                                            <span id="weatherTwo"></span>
-                                        </div>
-                                        <div class="col-sm">
-                                            <span id="weatherThree"></span>
-                                        </div>
-                                        <div class="col-sm">
-                                            <span id="weatherFour"></span>
-                                        </div>
-                                        <div class="col-sm">
-                                            <span id="weatherFive"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+    <div class="container-fluid">
+        <nav class="navbar bg-dark">
+            <span class="header-style mx-auto">Weather Dashboard</span>
+        </nav>
+        <div class="row">
+            <div class="col-4 bg-light">
+                <div class="mt-2">Search for a City:</div>
+                <div class="input-group mb-3">
+                    <input type="text" id="city" class="form-control">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id="searchCity"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
+                <!-- left column / list -->
+                <div class="list-group"></div>
+            </div>
+            <div class="col-8">
+                <div class="row p-2">
+                    <div class="card">
+                        <!-- main card -->
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <h4>5-Day Forecast:</h4>
+                    </div>
+                <!-- five day -->
+                <div id="weeklyForecast" class="row"></div>
             </div>
         </div>
-        <script src="https://kit.fontawesome.com/1cc5977b2c.js" crossorigin="anonymous"></script>
-		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-		<script src="assets/script.js"></script>
-	</body>
+    </div>
+
+    <script src="https://kit.fontawesome.com/1cc5977b2c.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="assets/script.js"></script>
+    
+</body>
+
 </html>
