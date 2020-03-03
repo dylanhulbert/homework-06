@@ -6,7 +6,7 @@ function getItems() {
     if (storedCities !== null) {
         searchHistory = storedCities;
     };
-    // lists up to 8
+     // lists up to 8
     for (i = 0; i < searchHistory.length; i++) {
         if (i == 8) {
             break;
@@ -107,7 +107,7 @@ function getData() {
         })
     })
 };
-// on click, adds to history
+// searches and adds to history
 $("#searchCity").click(function() {
     city = $("#city").val();
     getData();
