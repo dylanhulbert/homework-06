@@ -64,6 +64,16 @@ function getData() {
         // displays UV in main card
         }).then(function (response) {
             mainCard.append($("<p>").html("UV Index: <span>" + response.value + "</span>"));
+            // 
+            if (response.value <= 2) {
+                $("span").attr("class", "btn btn-outline-success");
+            };
+            if (response.value > 2 && response.value <= 5) {
+                $("span").attr("class", "btn btn-outline-warning");
+            };
+            if (response.value > 5) {
+                $("span").attr("class", "btn btn-outline-danger");
+            };
         })
         // another call for the 5-day (forecast)
         $.ajax({
