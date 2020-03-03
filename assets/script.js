@@ -49,7 +49,7 @@ function getData() {
         mainCard.append($("<img>").attr("src", iconURL));
         // converts K and removes decimals using Math.round
         var temp = Math.round((response.main.temp - 273.15) * 1.80 + 32);
-        mainCard.append($("<p>").html("Temperature: " + temp));
+        mainCard.append($("<p>").html("Temperature: " + temp + " &#8457"));
         var humidity = response.main.humidity;
         mainCard.append($("<p>").html("Humidity: " + humidity));
         var windSpeed = response.wind.speed;
@@ -98,7 +98,7 @@ function getData() {
                 // converts K and removes decimals using Math.round
                 var temp = Math.round((response.list[i * 8].main.temp - 273.15) * 1.80 + 32);
                 // displays temp
-                newCard.append($("<p>").html("Temp: " + temp));
+                newCard.append($("<p>").html("Temp: " + temp + " &#8457"));
                 // creates a var for humity from the response
                 var humidity = response.list[i * 8].main.humidity;
                 // displays humidity
