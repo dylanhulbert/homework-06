@@ -1,6 +1,4 @@
-// three main section vars
-var city;
-var mainCard = $(".card-body");
+// contains list
 var searchHistory = [];
 // returns local storage search history
 function getItems() {
@@ -14,15 +12,17 @@ function getItems() {
             break;
           }
         //  creates links/buttons https://getbootstrap.com/docs/4.0/components/list-group/
-        cityButton = $("<a>").attr({
+        cityListButton = $("<a>").attr({
             class: "list-group-item list-group-item-action",
             href: "#"
         });
         // appends history as a button below the search field
-        cityButton.text(searchHistory[i]);
-        $(".list-group").append(cityButton);
+        cityListButton.text(searchHistory[i]);
+        $(".list-group").append(cityListButton);
     }
 };
+var city;
+var mainCard = $(".card-body");
 // invokes getItems
 getItems();
 // main card
@@ -83,26 +83,26 @@ function getData() {
         }).then(function (response) {
             for (i = 0; i < 5; i++) {
                 // creates the columns
-                var newColumn = $("<div>").attr("class", "col fiveDay bg-primary text-white rounded-lg p-2");
-                $("#weeklyForecast").append(newColumn);
+                var newCard = $("<div>").attr("class", "col fiveDay bg-primary text-white rounded-lg p-2");
+                $("#weeklyForecast").append(newCard);
                 // uses moment for the date
                 var myDate = new Date(response.list[i * 8].dt * 1000);
                 // displays date
-                newColumn.append($("<h4>").html(myDate.toLocaleDateString()));
+                newCard.append($("<h4>").html(myDate.toLocaleDateString()));
                 // brings back the icon url suffix
                 var iconCode = response.list[i * 8].weather[0].icon;
                 // builds the icon URL
                 var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
                 // displays the icon
-                newColumn.append($("<img>").attr("src", iconURL));
+                newCard.append($("<img>").attr("src", iconURL));
                 // converts K and removes decimals using Math.round
                 var temp = Math.round((response.list[i * 8].main.temp - 273.15) * 1.80 + 32);
                 // displays temp
-                newColumn.append($("<p>").html("Temp: " + temp));
+                newCard.append($("<p>").html("Temp: " + temp));
                 // creates a var for humity from the response
                 var humidity = response.list[i * 8].main.humidity;
                 // displays humidity
-                newColumn.append($("<p>").html("Humidity: " + humidity));
+                newCard.append($("<p>").html("Humidity: " + humidity));
             }
         })
     })
@@ -118,13 +118,13 @@ $("#searchCity").click(function() {
     else {
         searchHistory.push(city);
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-        var cityButton = $("<a>").attr({
+        var cityListButton = $("<a>").attr({
             // list-group-item-action keeps the search history buttons consistent
             class: "list-group-item list-group-item-action",
             href: "#"
         });
-        cityButton.text(city);
-        $(".list-group").append(cityButton);
+        cityListButton.text(city);
+        $(".list-group").append(cityListButton);
     };
 });
 // listens for action on the history buttons
