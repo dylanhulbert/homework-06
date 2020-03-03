@@ -8,7 +8,7 @@ function getItems() {
     if (storedCities !== null) {
         searchHistory = storedCities;
     };
-    // lists up to 8... FIX TO SHOW MOST RECENT
+    // lists up to 8
     for (i = 0; i < searchHistory.length; i++) {
         if (i == 8) {
             break;
@@ -35,7 +35,6 @@ function getData() {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-
         // using moment to craft the date
         var date = moment().format(" MM/DD/YYYY");
         // takes the icon code from the response and assigns it to iconCode
@@ -98,8 +97,8 @@ function getData() {
         })
     })
 };
-// on click, adds to history as a sting
-$("#searchCity").click(function (event) {
+// on click, adds to history
+$("#searchCity").click(function() {
     city = $("#city").val();
     getData();
     var checkArray = searchHistory.includes(city);
@@ -110,6 +109,7 @@ $("#searchCity").click(function (event) {
         searchHistory.push(city);
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
         var cityButton = $("<a>").attr({
+            // list-group-item-action keeps the search history buttons consistent
             class: "list-group-item list-group-item-action",
             href: "#"
         });
@@ -117,8 +117,8 @@ $("#searchCity").click(function (event) {
         $(".list-group").append(cityButton);
     };
 });
-// produces history
-$(".list-group-item").click(function (event) {
+// listens for action on the history buttons
+$(".list-group-item").click(function() {
     city = $(this).text();
     getData();
 });
